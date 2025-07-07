@@ -1,210 +1,304 @@
-% 第一章：数学建模概述
+% 第一章：手机电池电量建模
 % 文件名：chapters/chapter1.tex
 
-\chapter{数学建模概述}\label{chap:intro}
+ \chapter{认识函数：从电量焦虑说起}\label{chap:battery-modeling}
 
-数学建模是一种通过数学语言描述现实世界问题的方法，它在科学研究、工程技术、经济管理等领域有着广泛的应用。
+我国著名数学家陈省身先生曾说：“数学好玩”。没错，数学也可以很有趣。欢迎进入数学建模的世界！在这本书中，我们将通过10道贴近生活的题目，带你领略数学建模的魅力。让我们从最熟悉的话题开始——手机电池！在这一章中，我们将通过一个贴近生活的例子，带你认识函数，并初步体验数学建模的过程。
 
-\section{什么是数学建模}\label{sec:what-is-modeling}
+\section{题目背景}\label{sec:problem-background}
 
-数学建模是运用数学的语言和方法，通过抽象、简化建立能近似刻画并"解决"实际问题的一种强有力的数学手段。
+小明最近发现自己的手机电池越来越不耐用了。早上充满电去学校，到了下午就快没电了。他想知道：
+\begin{itemize}
+    \item 手机电池的消耗规律是什么？
+    \item 按照目前的使用习惯，手机能用多长时间？
+    \item 怎样使用手机才能让电池用得更久？
+\end{itemize}
 
-\begin{definition}[数学建模]\label{def:mathematical-modeling}
-数学建模是指对现实世界中的某个对象或问题，运用数学的语言和方法，通过抽象、简化建立起一个数学结构的过程。
-\end{definition}
-
-\begin{infobox}[title=重要概念]
-数学建模的核心在于将实际问题转化为数学问题，通过数学方法求解，再将结果回归到实际问题中进行验证和应用。
+\begin{infobox}[title=生活中的数学]
+你有没有想过，我们每天都在接触数学建模？比如估算上学需要多长时间、计算买东西需要多少钱、预测考试成绩等，这些都是简单的数学建模过程！
 \end{infobox}
 
-\subsection{数学建模的基本步骤}
+\section{问题分析与假设}\label{sec:problem-analysis}
 
-数学建模的一般步骤包括：
+\subsection{观察和收集数据}
 
-\begin{enumerate}
-    \item \textbf{问题分析}：理解实际问题的背景和要求
-    \item \textbf{模型假设}：对问题进行合理的假设和简化
-    \item \textbf{模型建立}：建立数学模型
-    \item \textbf{模型求解}：运用数学方法求解模型
-    \item \textbf{模型验证}：检验模型的合理性和准确性
-    \item \textbf{模型应用}：将结果应用到实际问题中
-\end{enumerate}
+“没有调查就没有发言权”，为了回答小明的问题，他决定记录一天内的手机使用数据,如表\ref{tab:battery-data}所示。
 
-\begin{warningbox}[title=注意事项]
-在建模过程中，需要注意模型的适用性和局限性，避免过度简化或过度复杂化。
+\begin{warningbox}[title=数据收集]
+数据收集是数学建模的重要环节。数据的质量和数量直接影响模型的准确性。在后续的章节中，我们还将进一步探讨收集的数据如何进行处理。
 \end{warningbox}
-
-\section{数学建模的分类}\label{sec:modeling-types}
-
-根据不同的标准，数学建模可以有多种分类方式：
-
-\subsection{按数学方法分类}
-
-\begin{description}
-    \item[微分方程模型] 描述连续变化过程的模型
-    \item[优化模型] 求解最优化问题的模型
-    \item[概率统计模型] 处理随机现象的模型
-    \item[图论模型] 描述网络关系的模型
-    \item[离散数学模型] 处理离散对象的模型
-\end{description}
-
-\subsection{按应用领域分类}
-
-数学建模在各个领域都有广泛应用：
 
 \begin{table}[htbp]
     \centering
-    \caption{数学建模的应用领域}
-    \label{tab:application-areas}
-    \begin{tabular}{@{}ll@{}}
+    \caption{小明一周的手机电量记录}
+    
+    \label{tab:battery-data}
+    \begin{tabular}{@{}cccc@{}}
         \toprule
-        领域 & 典型应用 \\
+        时间 & 电量(\%) & 使用时长(小时) & 主要用途 \\
         \midrule
-        工程技术 & 结构优化、信号处理、控制系统 \\
-        经济管理 & 投资决策、资源配置、市场分析 \\
-        生物医学 & 疾病传播、药物动力学、生态系统 \\
-        社会科学 & 人口增长、交通流量、社会网络 \\
-        环境科学 & 环境污染、气候变化、生态保护 \\
+        8:00 & 100 & 0 & 充满电 \\
+        10:00 & 85 & 2 & 听音乐、看消息 \\
+        12:00 & 70 & 4 & 听音乐、看视频 \\
+        14:00 & 50 & 6 & 玩游戏、拍照 \\
+        16:00 & 35 & 8 & 看视频、聊天 \\
+        18:00 & 15 & 10 & 导航、通话 \\
+        19:30 & 5 & 11.5 & 看视频 \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-\section{数学建模实例}\label{sec:modeling-example}
+\subsection{建模假设}
 
-让我们通过一个简单的例子来说明数学建模的过程。
+为了简化问题，我们做出以下合理假设：
 
-\begin{example}[人口增长模型]\label{ex:population-growth}
-考虑一个封闭环境中的人口增长问题。
-\end{example}
+\begin{enumerate}
+    \item \textbf{线性消耗假设}：在正常使用情况下，电池电量按照固定速率消耗
+    \item \textbf{稳定使用假设}：小明每天的使用习惯基本相同
+    \item \textbf{忽略待机}：暂时不考虑待机状态下的电量消耗
+    \item \textbf{温度影响忽略}：假设环境温度对电池性能的影响可以忽略
+\end{enumerate}
 
-\begin{examplebox}[title=马尔萨斯人口模型]
-假设人口增长率与当前人口数量成正比，即：
-\[
-\frac{dP}{dt} = rP
-\]
-其中 $P(t)$ 是时刻 $t$ 的人口数量，$r$ 是人口增长率。
+\begin{warningbox}[title=关于假设]
+假设是数学建模的重要环节。合理的假设能够简化问题，让我们更容易找到规律；但假设过于简单可能会影响模型的准确性。
+\end{warningbox}
 
-这个微分方程的解为：
-\[
-P(t) = P_0 e^{rt}
-\]
-其中 $P_0$ 是初始人口数量。
-\end{examplebox}
+\section{建立数学模型}\label{sec:build-model}
 
-\begin{theorem}[马尔萨斯模型解的唯一性]\label{thm:malthus-uniqueness}
-在给定初始条件 $P(0) = P_0$ 的情况下，微分方程 $\frac{dP}{dt} = rP$ 的解是唯一的。
-\end{theorem}
+\subsection{确定变量}
 
-\begin{proof}
-这是一阶线性常微分方程的标准结果。根据解的存在唯一性定理，在给定初始条件下，解是唯一的。
-\end{proof}
+\begin{description}
+    \item[$t$] 使用时间（单位：小时）
+    \item[$B(t)$] 时刻$t$的电池电量（单位：\%）（我们马上就来解释这个符号是什么意思）
+    \item[$B_0$] 初始电量（通常为100\%）
+    \item[$k$] 电量消耗速率（单位：\%/小时）
+\end{description}
+
+\subsection{建立函数关系}
+
+根据线性消耗假设，我们可以建立如下模型：
+
+\begin{definitionbox}[title=线性电池消耗模型]
+\begin{equation}
+B(t) = B_0 - kt
+\end{equation}\label{eq:linear-battery-model}
+
+其中：
+\begin{itemize}
+    \item $B(t)$：使用$t$小时后的电量百分比
+    \item $B_0$：初始电量（通常为100\%）
+    \item $k$：电量消耗速率（\%/小时）
+    \item $t$：使用时间（小时）
+\end{itemize}
+\end{definitionbox}
+
+相必你对$B(t)$这种写法还比较陌生，没关系，如果是下面的表达方式，你是不是一下子就会了呢？
+
+\begin{equation}
+y = 100 - 7.5x
+\end{equation}\label{eq:linear-battery-model-2}
+
+没错，这是我们学习过的一次函数形式，其中$y$是因变量，对应$B(t)$，$x$是自变量，对应$t$，$100$是截距，对应$B_0$，$7.5$是斜率，对应$k$。 我们上面看到的函数\eqref{eq:linear-battery-model}，\eqref{eq:linear-battery-model-2}
+实际上是函数中的对应法则，对应法则描述了自变量$x$($t$)与因变量$y$($B(t)$)之间的关系。聪明如你，一定已经发现了，括号中的字母就描述了这个对应法则中谁是因变量。在今后的学习中，你还有可能遇到不止一个字母的函数，比如$f(x,y)$，$g(x,y,z)$，$h(x,y,z,w)$，等等，这些函数关系就被我们称为多元函数。恭喜你，你现在已经学会了如何更加规范地描述函数关系了。
+
+\begin{warningbox}[title=关于函数]
+    函数是数学建模中非常重要的概念。建立模型本质上就是寻找变量之间的关系，只不过，有时关系可以很明确地使用我们熟悉的函数关系来描述，有时则无法直接给出。
+\end{warningbox}
+
+
+\section{求解模型}\label{sec:solve-model}
+
+\subsection{确定参数}
+
+基于假设一，我们认为电池电量按照固定速率消耗，因此我们就使用前四个小时的数据计算出电量消耗速率$k$：
+
+使用4小时后，电量从100\%降到70\%，因此：
+\begin{equation}
+k = \frac{100\% - 70\%}{4\text{小时}} = \frac{30\%}{4\text{小时}} = 7.5\%/\text{小时}
+\end{equation}
+
+当然，你肯定发现了，从数据上来看，电池电量的消耗速率显然不是固定的。但是我们使用前四个小时的数据计算出的消耗率代替整体消耗率这件事情能不能接受呢，让我们验证一下这个结果：
+
+\begin{table}[htbp]
+    \centering
+    \caption{模型预测与实际数据对比}
+    \label{tab:model-verification}
+    \begin{tabular}{cccc}
+        \toprule
+        使用时长(小时) & 实际电量(\%) & 模型预测(\%) & 误差(\%) \\
+        \midrule
+        0 & 100 & 100.0 & 0.0 \\
+        2 & 85 & 85.0 & 0.0 \\
+        4 & 70 & 70.0 & 0.0 \\
+        \rowcolor{red!20}6 & 50 & 55.0 & 5.0 \uparrow\\
+        \rowcolor{red!20}8 & 35 & 40.0 & 5.0 \uparrow\\
+        \rowcolor{red!20}10 & 15 & 25.0 & 10.0 \uparrow\\
+         \bottomrule
+         \label{tab:predicted}
+    \end{tabular}
+\end{table}
+
+可以看到，使用这个模型计算出的结果与实际结果相差还算小。OK，让我们先暂时认可这件事，在下一章中，我们会探讨这个方法的改进。
+
+\subsection{模型公式}
+
+因此，小明手机的电池消耗模型为：
+\begin{equation}
+B(t) = 100 - 7.5t
+\end{equation}
+
+\begin{successbox}[title=模型解读]
+这个公式告诉我们：
+\begin{itemize}
+    \item 手机每小时消耗7.5\%的电量
+    \item 充满电的手机大约可以连续使用13.3小时
+\end{itemize}
+\end{successbox}
+
+\section{模型验证与改进}\label{sec:model-validation}
+
+\subsection{模型的优点}
+
+\begin{itemize}
+    \item \textbf{简单易懂}：使用了我们最熟悉的一次函数
+    \item \textbf{计算方便}：可以快速预测任意时刻的电量
+    \item \textbf{趋势准确}：正确反映了电量递减的趋势
+\end{itemize}
 
 \subsection{模型的局限性}
 
-马尔萨斯模型虽然简单，但有其局限性：
+通过对比表\ref{tab:model-verification}，我们发现：
 
 \begin{itemize}
-    \item 假设环境容量无限大
-    \item 忽略了环境阻力
-    \item 没有考虑资源限制
+    \item 使用时间越长，误差越大
+    \item 实际电量下降比模型预测的更快
 \end{itemize}
 
-\begin{successbox}[title=改进模型]
-为了克服这些局限性，可以考虑 Logistic 模型：
-\[
-\frac{dP}{dt} = rP\left(1 - \frac{P}{K}\right)
-\]
-其中 $K$ 是环境容量。
-\end{successbox}
+\subsection{模拟与可视化}
 
-\section{数学建模工具}\label{sec:modeling-tools}
+\begin{warningbox}[title=关于模拟与可视化]
+    使用计算机编程来计算我们建立好的数学模型是非常重要的，后续我们会学习到复杂到无法手算的模型，此时使用计算机来帮我们计算就方便多了。我们还会学习到超参数的概念，这时如果有一个靠谱的程序，我们就可以更简单地探究超参数对模型的影响。同时，我们还可以利用计算机变成来进行可视化。可视化可以帮助我们更好地理解模型，发现模型的局限性，并改进模型。
+\end{warningbox}
 
-现代数学建模离不开计算机工具的支持。常用的工具包括：
-
-\subsection{数值计算软件}
-
-\begin{codebox}[title=Python 示例代码]
-下面是使用 Python 求解 Logistic 方程的示例：
-\begin{lstlisting}[language=Python]
-import numpy as np
+\begin{codebox}[title=Python验证代码]
+让我们用Python来验证我们的模型：
+\begin{minted}{python}
 import matplotlib.pyplot as plt
-from scipy.integrate import odeint
-
-# 定义 Logistic 方程
-def logistic(P, t, r, K):
-    return r * P * (1 - P/K)
-
-# 参数设置
-r = 0.1  # 增长率
-K = 100  # 环境容量
-P0 = 10  # 初始人口
-
-# 时间序列
-t = np.linspace(0, 50, 100)
-
-# 求解微分方程
-P = odeint(logistic, P0, t, args=(r, K))
-
-# 绘制结果
-plt.figure(figsize=(10, 6))
-plt.plot(t, P, 'b-', linewidth=2, label='Logistic 模型')
-plt.axhline(y=K, color='r', linestyle='--', label=f'环境容量 K={K}')
-plt.xlabel('时间')
-plt.ylabel('人口数量')
-plt.title('Logistic 人口增长模型')
-plt.legend()
-plt.grid(True)
+import numpy as np
+import matplotlib.font_manager as fm
+font_prop = fm.FontProperties(family=['SimSun'])
+time_actual = [0, 2, 4, 6, 8, 10, 11.5]# 实际数据
+battery_actual = [100, 85, 70, 50, 35, 15, 5]
+def battery_model(t):# 模型预测
+    return 100 - 7.5 * t
+time_model = np.linspace(0, 12, 100)# 生成预测数据
+battery_model_values = battery_model(time_model)
+actual_color = '#E63946'  # 鲜红色
+model_color = '#457B9D'   # 深蓝色
+background_color = '#FFFFFF'  # 白色
+plt.style.use('classic')  
+plt.figure(figsize=(14, 10), facecolor=background_color)
+ax = plt.gca()
+ax.set_facecolor(background_color)
+plt.plot(time_actual, battery_actual, 'o-', color=actual_color, label='实际数据', markersize=8, linewidth=2)
+plt.plot(time_model, battery_model_values, '-', color=model_color, label='模型预测', linewidth=2.5)
+plt.xlabel('使用时间 (小时)', fontsize=24, fontweight='bold', fontproperties=font_prop)
+plt.ylabel('电池电量 (%)', fontsize=24, fontweight='bold', fontproperties=font_prop)
+plt.grid(True, alpha=0.3, linestyle='--')
+plt.xlim(0, 12)
+plt.ylim(0, 105)
+plt.axhspan(0, 20, alpha=0.2, color='#FFCCCB', label='低电量区域')
+plt.tight_layout()
 plt.show()
-\end{lstlisting}
+\end{minted}
 \end{codebox}
 
-\subsection{其他常用工具}
-
-\begin{table}[htbp]
+\begin{figure}[htbp]
     \centering
-    \caption{数学建模常用软件工具}
-    \label{tab:modeling-tools}
-    \begin{tabular}{@{}lll@{}}
-        \toprule
-        软件 & 特点 & 适用场景 \\
-        \midrule
-        MATLAB & 强大的数值计算 & 工程计算、仿真 \\
-        Python & 开源、生态丰富 & 数据分析、机器学习 \\
-        R & 统计分析专业 & 统计建模、数据可视化 \\
-        Mathematica & 符号计算强大 & 理论分析、公式推导 \\
-        SPSS & 统计分析友好 & 社会科学研究 \\
-        \bottomrule
-    \end{tabular}
-\end{table}
+    \includegraphics[width=0.8\textwidth]{images/1-1.pdf}
+    \caption{电池电量模型与实际数据对比图}
+    \label{fig:battery-model}
+\end{figure}
 
-\section{本章小结}\label{sec:chapter1-summary}
+从图\ref{fig:battery-model}中可以看出，我们的一次函数模型（蓝线）与实际数据（红线）有一定的差距，特别是在使用时间较长的情况下。这说明实际电池放电可能不是完全线性的，在电量较低时放电速度可能会加快。这也是我们模型的局限性之一，未来可以考虑使用非线性模型来更准确地描述电池放电过程。
+对比表\ref{tab:predicted}和图\ref{fig:battery-model}，你应该直观地感受到可视化的魅力了。
 
-本章介绍了数学建模的基本概念、分类和应用，通过人口增长模型的例子说明了数学建模的基本过程。主要内容包括：
+\section{模型应用}\label{sec:model-application}
 
-\begin{itemize}
-    \item 数学建模的定义和基本步骤
-    \item 数学建模的分类方法
-    \item 数学建模的应用领域
-    \item 简单的建模实例
-    \item 常用的建模工具
-\end{itemize}
+\subsection{实际问题求解}
 
-\begin{definitionbox}[title=本章要点]
-数学建模是连接数学理论与实际应用的桥梁，掌握建模的基本方法和技能对于解决实际问题具有重要意义。
-\end{definitionbox}
+利用我们建立的模型，可以解决很多实际问题：
 
-\section*{习题}
+\begin{example}[出门前的电量规划]
+小明要去看2小时的电影，现在手机电量是60\%，够用吗？
+
+解：使用模型$B(t) = 60 - 7.5t$
+2小时后电量：$B(2) = 60 - 7.5 \times 2 = 45\%$
+
+结论：电量充足，还剩45\%。
+\end{example}
+
+\begin{example}[紧急情况下的使用时间]
+手机现在只有20\%电量，还能用多长时间？
+
+解：设还能用$t$小时，则：
+$20 - 7.5t = 0$（假设用到没电）
+$t = \frac{20}{7.5} = 2.67$小时
+
+结论：大约还能用2小时40分钟。
+\end{example}
+
+\subsection{节电建议}
+
+基于模型分析，我们可以给出节电建议。影响模型的因素只有一个，就是电量的消耗速率。因此，为了提高使用时间，我们需要减少电量的消耗率。
+
+
+\section{思考与拓展}\label{sec:thinking-extension}
+
+\subsection{这真的对吗？}
+
+在本章中，我们使用前四个小时的数据计算出了电量的消耗速率代替了整体的消耗速率。但是，这样真的合理吗？在下一章中，我们将揭开这个问题的答案。
+
+\subsection{数学建模的一般步骤}
+
+看到这里，恭喜你，你已经入门数学建模了。虽然这个例子十分简单，但是通过这个例子，我们学到了数学建模的基本步骤：
 
 \begin{enumerate}
-    \item 请解释数学建模的基本步骤，并举例说明每个步骤的具体内容。
-    
-    \item 比较马尔萨斯人口模型和 Logistic 人口模型的异同点。
-    
-    \item 选择一个你熟悉的实际问题，尝试建立一个简单的数学模型。
-    
-    \item 使用 Python 或其他工具，实现本章中的人口增长模型，并分析参数对结果的影响。
+    \item \textbf{问题分析}：理解实际问题，收集相关数据
+    \item \textbf{合理假设}：简化问题，突出主要因素
+    \item \textbf{建立模型}：用数学语言描述问题，尤其是要寻找函数关系
+    \item \textbf{求解模型}：利用数学方法或计算机编程得到答案
+    \item \textbf{验证模型}：检查模型的合理性和准确性，并进行改进，可以通过可视化来帮助我们理解模型
+    \item \textbf{应用模型}：解决实际问题，指导实践
 \end{enumerate}
 
-\section*{参考文献}
+\section{本章小结}\label{sec:chapter-summary}
 
-更多关于数学建模的内容，请参考 \cite{giordano2014first} 和 \cite{meerschaert2007mathematical}。 
+在这一章中，我们通过手机电池电量这个生活中的常见问题，初步体验了数学建模的整个过程。
+
+\begin{definitionbox}[title=本章要点]
+\begin{itemize}
+    \item 学会了如何从实际问题中抽象出数学模型
+    \item 掌握了一次函数在实际问题中的应用，重点把握为什么可以使用一次函数，因为我们进行了合理假设
+    \item 了解了数学建模的基本步骤和思维方法
+    \item 体会到了数学与生活的紧密联系
+\end{itemize}
+\end{definitionbox}
+
+\section*{课后练习}
+
+\begin{enumerate}
+    \item 记录你自己手机一天的电量变化，建立你的个人电池消耗模型。
+    
+    \item 如果小明换了一部新手机，电池容量更大，每小时只消耗5\%的电量，重新建立模型并与原模型比较。
+    
+    \item 调研不同品牌手机的电池表现，分析影响电池寿命的主要因素。
+    
+    \item 设计一个实验，验证手机在不同使用模式下的耗电规律。
+    
+    \item 思考：除了线性模型，还有什么函数可能更好地描述电池电量变化？为什么？
+\end{enumerate}
+
+\begin{warningbox}[title=下章预告]
+下一章我们将优化本章中的解法，从本章最后提出的问题出发，学习分段函数和最小二乘拟合。
+\end{warningbox}

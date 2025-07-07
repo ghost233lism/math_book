@@ -109,6 +109,7 @@
 \RequirePackage{longtable}
 \RequirePackage{array}
 \RequirePackage{multirow}
+\RequirePackage{colortbl}
 \RequirePackage{graphicx}
 \RequirePackage{subcaption}
 \RequirePackage{float}
