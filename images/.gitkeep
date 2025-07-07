@@ -1,0 +1,14 @@
+# 图片目录
+
+请将教材中使用的图片文件放在此目录下。
+
+支持的格式：
+- PNG
+- JPEG/JPG  
+- PDF
+- EPS
+
+示例文件名：
+- figure1.png
+- diagram.pdf
+- plot.jpg 

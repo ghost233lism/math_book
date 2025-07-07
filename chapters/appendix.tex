@@ -1,0 +1,534 @@
+% 附录
+% 文件名：chapters/appendix.tex
+
+\chapter{常用公式与算法}\label{app:formulas-algorithms}
+
+本附录收集了数学建模中常用的公式、算法和工具，供读者参考。
+
+\section{概率论与统计学公式}\label{app:probability-statistics}
+
+\subsection{常用概率分布}
+
+\begin{table}[htbp]
+    \centering
+    \caption{常用概率分布汇总}
+    \label{tab:app-distributions}
+    \begin{tabular}{@{}llll@{}}
+        \toprule
+        分布 & 参数 & 均值 & 方差 \\
+        \midrule
+        \multicolumn{4}{l}{\textbf{离散分布}} \\
+        \midrule
+        伯努利分布 & $p$ & $p$ & $p(1-p)$ \\
+        二项分布 & $n, p$ & $np$ & $np(1-p)$ \\
+        泊松分布 & $\lambda$ & $\lambda$ & $\lambda$ \\
+        几何分布 & $p$ & $\frac{1}{p}$ & $\frac{1-p}{p^2}$ \\
+        负二项分布 & $r, p$ & $\frac{r(1-p)}{p}$ & $\frac{r(1-p)}{p^2}$ \\
+        \midrule
+        \multicolumn{4}{l}{\textbf{连续分布}} \\
+        \midrule
+        均匀分布 & $a, b$ & $\frac{a+b}{2}$ & $\frac{(b-a)^2}{12}$ \\
+        指数分布 & $\lambda$ & $\frac{1}{\lambda}$ & $\frac{1}{\lambda^2}$ \\
+        正态分布 & $\mu, \sigma^2$ & $\mu$ & $\sigma^2$ \\
+        伽马分布 & $\alpha, \beta$ & $\frac{\alpha}{\beta}$ & $\frac{\alpha}{\beta^2}$ \\
+        贝塔分布 & $\alpha, \beta$ & $\frac{\alpha}{\alpha+\beta}$ & $\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{重要统计量的分布}
+
+\begin{definitionbox}[title=抽样分布]
+设 $X_1, X_2, \ldots, X_n$ 是来自 $\mathcal{N}(\mu, \sigma^2)$ 的样本，则：
+\begin{enumerate}
+    \item $\bar{X} \sim \mathcal{N}\left(\mu, \frac{\sigma^2}{n}\right)$
+    \item $\frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$
+    \item $\frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t(n-1)$
+\end{enumerate}
+\end{definitionbox}
+
+\section{线性代数公式}\label{app:linear-algebra}
+
+\subsection{矩阵基本运算}
+
+\begin{infobox}[title=矩阵运算法则]
+设 $A, B$ 是矩阵，$c$ 是标量，则：
+\begin{itemize}
+    \item $(A + B)^T = A^T + B^T$
+    \item $(AB)^T = B^T A^T$
+    \item $(A^{-1})^T = (A^T)^{-1}$
+    \item $\det(AB) = \det(A)\det(B)$
+    \item $\text{tr}(A + B) = \text{tr}(A) + \text{tr}(B)$
+    \item $\text{tr}(AB) = \text{tr}(BA)$
+\end{itemize}
+\end{infobox}
+
+\subsection{特殊矩阵}
+
+\begin{table}[htbp]
+    \centering
+    \caption{特殊矩阵类型}
+    \label{tab:special-matrices}
+    \begin{tabular}{@{}ll@{}}
+        \toprule
+        矩阵类型 & 性质 \\
+        \midrule
+        对称矩阵 & $A^T = A$，特征值为实数 \\
+        反对称矩阵 & $A^T = -A$，对角元素为零 \\
+        正交矩阵 & $A^T A = I$，$\det(A) = \pm 1$ \\
+        幂等矩阵 & $A^2 = A$，特征值为 0 或 1 \\
+        正定矩阵 & $x^T A x > 0$ 对所有 $x \neq 0$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{优化算法}\label{app:optimization-algorithms}
+
+\subsection{梯度下降法}
+
+\begin{algorithm}[H]
+\caption{梯度下降法}\label{alg:gradient-descent}
+\begin{algorithmic}[1]
+\State 初始化 $x_0$，设置学习率 $\alpha > 0$，容差 $\epsilon > 0$
+\State $k = 0$
+\While{$\|\nabla f(x_k)\| > \epsilon$}
+    \State $x_{k+1} = x_k - \alpha \nabla f(x_k)$
+    \State $k = k + 1$
+\EndWhile
+\State 返回 $x_k$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{codebox}[title=梯度下降法的 Python 实现]
+\begin{minted}{python}
+import numpy as np
+
+def gradient_descent(f, grad_f, x0, alpha=0.01, epsilon=1e-6, max_iter=1000):
+    """
+    梯度下降法求解无约束优化问题
+    
+    参数:
+    f: 目标函数
+    grad_f: 梯度函数
+    x0: 初始点
+    alpha: 学习率
+    epsilon: 收敛容差
+    max_iter: 最大迭代次数
+    """
+    x = x0.copy()
+    history = [x.copy()]
+    
+    for i in range(max_iter):
+        grad = grad_f(x)
+        
+        # 检查收敛性
+        if np.linalg.norm(grad) < epsilon:
+            break
+        
+        # 更新参数
+        x = x - alpha * grad
+        history.append(x.copy())
+    
+    return x, history
+
+# 示例：最小化 f(x) = x1^2 + x2^2
+def f(x):
+    return x[0]**2 + x[1]**2
+
+def grad_f(x):
+    return np.array([2*x[0], 2*x[1]])
+
+# 求解
+x0 = np.array([1.0, 1.0])
+x_opt, history = gradient_descent(f, grad_f, x0)
+print(f"最优解: {x_opt}")
+print(f"最优值: {f(x_opt)}")
+\end{minted}
+\end{codebox}
+
+\subsection{牛顿法}
+
+\begin{algorithm}[H]
+\caption{牛顿法}\label{alg:newton-method}
+\begin{algorithmic}[1]
+\State 初始化 $x_0$，设置容差 $\epsilon > 0$
+\State $k = 0$
+\While{$\|\nabla f(x_k)\| > \epsilon$}
+    \State 计算 Hessian 矩阵 $H_k = \nabla^2 f(x_k)$
+    \State 解方程 $H_k d_k = -\nabla f(x_k)$
+    \State $x_{k+1} = x_k + d_k$
+    \State $k = k + 1$
+\EndWhile
+\State 返回 $x_k$
+\end{algorithmic}
+\end{algorithm}
+
+\section{数值计算方法}\label{app:numerical-methods}
+
+\subsection{数值积分}
+
+\begin{table}[htbp]
+    \centering
+    \caption{数值积分公式}
+    \label{tab:numerical-integration}
+    \begin{tabular}{@{}ll@{}}
+        \toprule
+        方法 & 公式 \\
+        \midrule
+        梯形公式 & $\int_a^b f(x) dx \approx \frac{b-a}{2}[f(a) + f(b)]$ \\
+        Simpson公式 & $\int_a^b f(x) dx \approx \frac{b-a}{6}[f(a) + 4f(\frac{a+b}{2}) + f(b)]$ \\
+        复化梯形公式 & $\int_a^b f(x) dx \approx \frac{h}{2}[f(a) + 2\sum_{i=1}^{n-1}f(x_i) + f(b)]$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{常微分方程数值解}
+
+\begin{examplebox}[title=欧拉方法]
+对于初值问题 $y' = f(t, y)$，$y(t_0) = y_0$，欧拉方法的递推公式为：
+\[
+y_{n+1} = y_n + h f(t_n, y_n)
+\]
+其中 $h$ 是步长，$t_n = t_0 + nh$。
+\end{examplebox}
+
+\begin{codebox}[title=四阶龙格-库塔方法]
+\begin{minted}{python}
+import numpy as np
+
+def runge_kutta_4(f, t0, y0, h, n):
+    """
+    四阶龙格-库塔方法求解常微分方程
+    
+    参数:
+    f: 函数 f(t, y)
+    t0: 初始时间
+    y0: 初始值
+    h: 步长
+    n: 步数
+    """
+    t = np.zeros(n+1)
+    y = np.zeros(n+1)
+    
+    t[0] = t0
+    y[0] = y0
+    
+    for i in range(n):
+        k1 = h * f(t[i], y[i])
+        k2 = h * f(t[i] + h/2, y[i] + k1/2)
+        k3 = h * f(t[i] + h/2, y[i] + k2/2)
+        k4 = h * f(t[i] + h, y[i] + k3)
+        
+        y[i+1] = y[i] + (k1 + 2*k2 + 2*k3 + k4) / 6
+        t[i+1] = t[i] + h
+    
+    return t, y
+
+# 示例：求解 y' = -2y + 1, y(0) = 0
+def f(t, y):
+    return -2*y + 1
+
+t, y = runge_kutta_4(f, 0, 0, 0.1, 100)
+\end{minted}
+\end{codebox}
+
+\section{图论算法}\label{app:graph-algorithms}
+
+\subsection{最短路径算法}
+
+\begin{algorithm}[H]
+\caption{Dijkstra 算法}\label{alg:dijkstra}
+\begin{algorithmic}[1]
+\State 初始化距离数组 $d$，$d[s] = 0$，其余为 $\infty$
+\State 初始化优先队列 $Q$，包含所有顶点
+\While{$Q$ 非空}
+    \State $u = \arg\min_{v \in Q} d[v]$
+    \State 从 $Q$ 中移除 $u$
+    \For{$u$ 的每个邻居 $v$}
+        \State $alt = d[u] + w(u, v)$
+        \If{$alt < d[v]$}
+            \State $d[v] = alt$
+            \State $prev[v] = u$
+        \EndIf
+    \EndFor
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{最小生成树算法}
+
+\begin{algorithm}[H]
+\caption{Prim 算法}\label{alg:prim}
+\begin{algorithmic}[1]
+\State 选择任意顶点 $v_0$ 作为起始点
+\State 初始化 $V_{MST} = \{v_0\}$，$E_{MST} = \emptyset$
+\While{$|V_{MST}| < |V|$}
+    \State 找到权重最小的边 $(u, v)$，其中 $u \in V_{MST}$，$v \notin V_{MST}$
+    \State $V_{MST} = V_{MST} \cup \{v\}$
+    \State $E_{MST} = E_{MST} \cup \{(u, v)\}$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+\section{常用软件工具}\label{app:software-tools}
+
+\subsection{Python 科学计算库}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Python 科学计算库}
+    \label{tab:python-libraries}
+    \begin{tabular}{@{}ll@{}}
+        \toprule
+        库名 & 主要功能 \\
+        \midrule
+        NumPy & 数值计算、数组操作 \\
+        SciPy & 科学计算、优化、统计 \\
+        Matplotlib & 数据可视化 \\
+        Pandas & 数据处理和分析 \\
+        Scikit-learn & 机器学习 \\
+        SymPy & 符号计算 \\
+        NetworkX & 图论和网络分析 \\
+        CVXPY & 凸优化 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{MATLAB 工具箱}
+
+\begin{table}[htbp]
+    \centering
+    \caption{MATLAB 常用工具箱}
+    \label{tab:matlab-toolboxes}
+    \begin{tabular}{@{}ll@{}}
+        \toprule
+        工具箱 & 功能 \\
+        \midrule
+        Optimization Toolbox & 优化算法 \\
+        Statistics Toolbox & 统计分析 \\
+        Signal Processing Toolbox & 信号处理 \\
+        Control System Toolbox & 控制系统 \\
+        Curve Fitting Toolbox & 曲线拟合 \\
+        Partial Differential Equation Toolbox & 偏微分方程 \\
+        Global Optimization Toolbox & 全局优化 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{数学建模竞赛常用技巧}\label{app:modeling-tips}
+
+\subsection{问题分析技巧}
+
+\begin{successbox}[title=问题分析的一般步骤]
+\begin{enumerate}
+    \item \textbf{理解问题背景}：深入理解问题的实际背景和应用场景
+    \item \textbf{明确目标}：清晰地定义要解决的问题和期望的结果
+    \item \textbf{识别变量}：确定决策变量、参数和约束条件
+    \item \textbf{简化假设}：合理简化复杂的实际问题
+    \item \textbf{选择方法}：根据问题特点选择合适的数学方法
+    \item \textbf{验证结果}：检验模型的合理性和准确性
+\end{enumerate}
+\end{successbox}
+
+\subsection{模型建立技巧}
+
+\begin{warningbox}[title=模型建立的注意事项]
+\begin{itemize}
+    \item 避免过度复杂化，保持模型的简洁性
+    \item 注意模型的适用范围和局限性
+    \item 考虑模型的可解性和计算复杂度
+    \item 验证模型的稳定性和敏感性
+    \item 对结果进行合理性检验
+\end{itemize}
+\end{warningbox}
+
+\subsection{论文写作技巧}
+
+\begin{infobox}[title=数学建模论文结构]
+\begin{enumerate}
+    \item \textbf{摘要}：简洁地概述问题、方法和结果
+    \item \textbf{问题重述}：用自己的话重新表述问题
+    \item \textbf{模型假设}：列出所有的假设条件
+    \item \textbf{符号说明}：定义所有使用的符号
+    \item \textbf{模型建立}：详细描述模型的建立过程
+    \item \textbf{模型求解}：说明求解方法和计算过程
+    \item \textbf{结果分析}：分析和解释计算结果
+    \item \textbf{模型评价}：讨论模型的优缺点
+    \item \textbf{参考文献}：列出所有引用的资料
+\end{enumerate}
+\end{infobox}
+
+\section{常用数学公式}\label{app:mathematical-formulas}
+
+\subsection{微积分公式}
+
+\begin{table}[htbp]
+    \centering
+    \caption{常用导数公式}
+    \label{tab:derivatives}
+    \begin{tabular}{@{}ll@{}}
+        \toprule
+        函数 & 导数 \\
+        \midrule
+        $x^n$ & $nx^{n-1}$ \\
+        $e^x$ & $e^x$ \\
+        $\ln x$ & $\frac{1}{x}$ \\
+        $\sin x$ & $\cos x$ \\
+        $\cos x$ & $-\sin x$ \\
+        $\tan x$ & $\sec^2 x$ \\
+        $\arcsin x$ & $\frac{1}{\sqrt{1-x^2}}$ \\
+        $\arccos x$ & $-\frac{1}{\sqrt{1-x^2}}$ \\
+        $\arctan x$ & $\frac{1}{1+x^2}$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{积分公式}
+
+\begin{table}[htbp]
+    \centering
+    \caption{常用积分公式}
+    \label{tab:integrals}
+    \begin{tabular}{@{}ll@{}}
+        \toprule
+        函数 & 积分 \\
+        \midrule
+        $x^n$ & $\frac{x^{n+1}}{n+1} + C$ \\
+        $e^x$ & $e^x + C$ \\
+        $\frac{1}{x}$ & $\ln|x| + C$ \\
+        $\sin x$ & $-\cos x + C$ \\
+        $\cos x$ & $\sin x + C$ \\
+        $\sec^2 x$ & $\tan x + C$ \\
+        $\frac{1}{\sqrt{1-x^2}}$ & $\arcsin x + C$ \\
+        $\frac{1}{1+x^2}$ & $\arctan x + C$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{级数公式}
+
+\begin{definitionbox}[title=常用级数展开]
+\begin{align}
+e^x &= \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots \\
+\sin x &= \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n+1}}{(2n+1)!} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots \\
+\cos x &= \sum_{n=0}^{\infty} \frac{(-1)^n x^{2n}}{(2n)!} = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \cdots \\
+\ln(1+x) &= \sum_{n=1}^{\infty} \frac{(-1)^{n+1} x^n}{n} = x - \frac{x^2}{2} + \frac{x^3}{3} - \cdots
+\end{align}
+\end{definitionbox}
+
+\section{编程实用技巧}\label{app:programming-tips}
+
+\subsection{Python 编程技巧}
+
+\begin{codebox}[title=Python 常用技巧]
+\begin{minted}{python}
+# 1. 列表推导式
+squares = [x**2 for x in range(10)]
+
+# 2. 字典推导式
+square_dict = {x: x**2 for x in range(5)}
+
+# 3. 函数装饰器
+def timer(func):
+    import time
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        end = time.time()
+        print(f"{func.__name__} took {end - start:.4f} seconds")
+        return result
+    return wrapper
+
+@timer
+def slow_function():
+    time.sleep(1)
+    return "Done"
+
+# 4. 上下文管理器
+with open('file.txt', 'r') as f:
+    content = f.read()
+
+# 5. 异常处理
+try:
+    result = 10 / 0
+except ZeroDivisionError as e:
+    print(f"Error: {e}")
+finally:
+    print("Cleanup code")
+\end{minted}
+\end{codebox}
+
+\subsection{数据处理技巧}
+
+\begin{codebox}[title=Pandas 常用操作]
+\begin{minted}{python}
+import pandas as pd
+import numpy as np
+
+# 创建数据框
+df = pd.DataFrame({
+    'A': [1, 2, 3, 4, 5],
+    'B': [10, 20, 30, 40, 50],
+    'C': ['a', 'b', 'c', 'd', 'e']
+})
+
+# 数据筛选
+filtered_df = df[df['A'] > 2]
+
+# 数据分组
+grouped = df.groupby('C')['A'].mean()
+
+# 数据透视
+pivot_table = df.pivot_table(values='B', index='C', columns='A')
+
+# 缺失值处理
+df_filled = df.fillna(method='forward')
+
+# 数据合并
+df1 = pd.DataFrame({'key': ['A', 'B'], 'value1': [1, 2]})
+df2 = pd.DataFrame({'key': ['A', 'B'], 'value2': [3, 4]})
+merged = pd.merge(df1, df2, on='key')
+ \end{minted}
+\end{codebox}
+
+\section{参考资料}\label{app:references}
+
+\subsection{推荐书籍}
+
+\begin{enumerate}
+    \item 《数学建模》- 姜启源等
+    \item 《数学建模算法与应用》- 司守奎等
+    \item 《Mathematical Modeling》- Frank R. Giordano
+    \item 《A First Course in Mathematical Modeling》- Frank R. Giordano
+    \item 《Optimization Theory and Methods》- Wenyu Sun
+\end{enumerate}
+
+\subsection{在线资源}
+
+\begin{itemize}
+    \item 全国大学生数学建模竞赛官网：\url{http://www.mcm.edu.cn}
+    \item 美国大学生数学建模竞赛官网：\url{https://www.comap.com/contests/mcm-icm}
+    \item SciPy 官方文档：\url{https://scipy.org}
+    \item NumPy 官方文档：\url{https://numpy.org}
+    \item Matplotlib 官方文档：\url{https://matplotlib.org}
+\end{itemize}
+
+\subsection{数学建模竞赛}
+
+\begin{table}[htbp]
+    \centering
+    \caption{主要数学建模竞赛}
+    \label{tab:modeling-competitions}
+    \begin{tabular}{@{}ll@{}}
+        \toprule
+        竞赛名称 & 举办时间 \\
+        \midrule
+        全国大学生数学建模竞赛 & 每年9月 \\
+        美国大学生数学建模竞赛 & 每年2月 \\
+        全国研究生数学建模竞赛 & 每年9月 \\
+        "高教社杯"全国大学生数学建模竞赛 & 每年9月 \\
+                 \bottomrule
+     \end{tabular}
+ \end{table}
+ 
+ 这些竞赛为学生提供了实践数学建模技能的机会，也是检验学习成果的重要平台。 

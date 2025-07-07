@@ -1,0 +1,76 @@
+% 数学建模教材主文件
+% 作者：[您的姓名]
+% 日期：\today
+
+\documentclass[12pt,a4paper,oneside]{mathmodeling}
+
+% 开始文档
+\begin{document}
+
+% 导入配置文件
+\input{config}
+
+% cleveref 中文标签设置
+\crefname{figure}{图}{图}
+\crefname{table}{表}{表}
+\crefname{equation}{式}{式}
+\crefname{chapter}{章}{章}
+\crefname{section}{节}{节}
+\crefname{subsection}{小节}{小节}
+\crefname{subsubsection}{小小节}{小小节}
+\crefname{theorem}{定理}{定理}
+\crefname{definition}{定义}{定义}
+\crefname{example}{例子}{例子}
+\crefname{lemma}{引理}{引理}
+\crefname{corollary}{推论}{推论}
+\crefname{property}{性质}{性质}
+
+% 设置 PDF 元数据
+\hypersetup{
+    pdftitle={数学建模教材},
+    pdfauthor={作者姓名},
+    pdfsubject={数学建模},
+    pdfkeywords={数学建模, 数学, 建模, 教材},
+    pdfcreator={LaTeX},
+    pdfproducer={LaTeX}
+}
+
+% 封面
+\maketitle
+
+% 前言部分
+\frontmatter
+
+% 目录
+\tableofcontents
+\cleardoublepage
+
+% 图表索引
+\listoffigures
+\cleardoublepage
+
+\listoftables
+\cleardoublepage
+
+% 正文部分
+\mainmatter
+
+% 导入章节
+\include{chapters/chapter1}
+\include{chapters/chapter2}
+\include{chapters/chapter3}
+
+% 附录
+\appendix
+\include{chapters/appendix}
+
+% 后记部分
+\backmatter
+
+% 参考文献
+\printbibliography[heading=bibintoc]
+
+% 索引
+\printindex
+
+\end{document} 

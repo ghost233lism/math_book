@@ -1,0 +1,44 @@
+% 配置文件
+% 文件名：config.tex
+
+% 书籍信息设置
+\booktitle{数学建模教材}
+\booksubtitle{理论、方法与应用}
+\bookauthor{作者姓名}
+\bookinstitution{某某大学}
+\bookdate{2024年1月}
+
+% 参考文献文件（该命令需要在preamble中，已在cls文件中处理）
+% \addbibresource{bibliography.bib}
+
+% 暗色模式切换（将此注释去掉以启用暗色模式）
+% \documentclass[12pt,a4paper,oneside,darkmode]{mathmodeling}
+
+% 中文字体设置（如果需要自定义字体路径）
+% 请将字体文件放在 fonts/ 目录下
+
+% 图片路径设置
+\graphicspath{{images/}{figures/}}
+
+% 代码高亮语言设置（该命令需要在preamble中，已在cls文件中处理）
+% \RequirePackage{pythonhighlight}
+
+% 自定义颜色（可选）
+% \definecolor{mycolor}{RGB}{120,120,120}
+
+% 页面设置微调（可选）
+% \geometry{left=3cm,right=3cm,top=3cm,bottom=3cm}
+
+% 数学公式设置
+\numberwithin{equation}{section}
+
+% 图表编号设置
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+% 脚注样式设置
+\renewcommand{\thefootnote}{\arabic{footnote}}
+
+% 其他自定义设置
+\setlength{\abovecaptionskip}{10pt}
+\setlength{\belowcaptionskip}{10pt} 

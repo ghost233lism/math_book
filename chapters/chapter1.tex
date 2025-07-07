@@ -1,0 +1,210 @@
+% 第一章：数学建模概述
+% 文件名：chapters/chapter1.tex
+
+\chapter{数学建模概述}\label{chap:intro}
+
+数学建模是一种通过数学语言描述现实世界问题的方法，它在科学研究、工程技术、经济管理等领域有着广泛的应用。
+
+\section{什么是数学建模}\label{sec:what-is-modeling}
+
+数学建模是运用数学的语言和方法，通过抽象、简化建立能近似刻画并"解决"实际问题的一种强有力的数学手段。
+
+\begin{definition}[数学建模]\label{def:mathematical-modeling}
+数学建模是指对现实世界中的某个对象或问题，运用数学的语言和方法，通过抽象、简化建立起一个数学结构的过程。
+\end{definition}
+
+\begin{infobox}[title=重要概念]
+数学建模的核心在于将实际问题转化为数学问题，通过数学方法求解，再将结果回归到实际问题中进行验证和应用。
+\end{infobox}
+
+\subsection{数学建模的基本步骤}
+
+数学建模的一般步骤包括：
+
+\begin{enumerate}
+    \item \textbf{问题分析}：理解实际问题的背景和要求
+    \item \textbf{模型假设}：对问题进行合理的假设和简化
+    \item \textbf{模型建立}：建立数学模型
+    \item \textbf{模型求解}：运用数学方法求解模型
+    \item \textbf{模型验证}：检验模型的合理性和准确性
+    \item \textbf{模型应用}：将结果应用到实际问题中
+\end{enumerate}
+
+\begin{warningbox}[title=注意事项]
+在建模过程中，需要注意模型的适用性和局限性，避免过度简化或过度复杂化。
+\end{warningbox}
+
+\section{数学建模的分类}\label{sec:modeling-types}
+
+根据不同的标准，数学建模可以有多种分类方式：
+
+\subsection{按数学方法分类}
+
+\begin{description}
+    \item[微分方程模型] 描述连续变化过程的模型
+    \item[优化模型] 求解最优化问题的模型
+    \item[概率统计模型] 处理随机现象的模型
+    \item[图论模型] 描述网络关系的模型
+    \item[离散数学模型] 处理离散对象的模型
+\end{description}
+
+\subsection{按应用领域分类}
+
+数学建模在各个领域都有广泛应用：
+
+\begin{table}[htbp]
+    \centering
+    \caption{数学建模的应用领域}
+    \label{tab:application-areas}
+    \begin{tabular}{@{}ll@{}}
+        \toprule
+        领域 & 典型应用 \\
+        \midrule
+        工程技术 & 结构优化、信号处理、控制系统 \\
+        经济管理 & 投资决策、资源配置、市场分析 \\
+        生物医学 & 疾病传播、药物动力学、生态系统 \\
+        社会科学 & 人口增长、交通流量、社会网络 \\
+        环境科学 & 环境污染、气候变化、生态保护 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{数学建模实例}\label{sec:modeling-example}
+
+让我们通过一个简单的例子来说明数学建模的过程。
+
+\begin{example}[人口增长模型]\label{ex:population-growth}
+考虑一个封闭环境中的人口增长问题。
+\end{example}
+
+\begin{examplebox}[title=马尔萨斯人口模型]
+假设人口增长率与当前人口数量成正比，即：
+\[
+\frac{dP}{dt} = rP
+\]
+其中 $P(t)$ 是时刻 $t$ 的人口数量，$r$ 是人口增长率。
+
+这个微分方程的解为：
+\[
+P(t) = P_0 e^{rt}
+\]
+其中 $P_0$ 是初始人口数量。
+\end{examplebox}
+
+\begin{theorem}[马尔萨斯模型解的唯一性]\label{thm:malthus-uniqueness}
+在给定初始条件 $P(0) = P_0$ 的情况下，微分方程 $\frac{dP}{dt} = rP$ 的解是唯一的。
+\end{theorem}
+
+\begin{proof}
+这是一阶线性常微分方程的标准结果。根据解的存在唯一性定理，在给定初始条件下，解是唯一的。
+\end{proof}
+
+\subsection{模型的局限性}
+
+马尔萨斯模型虽然简单，但有其局限性：
+
+\begin{itemize}
+    \item 假设环境容量无限大
+    \item 忽略了环境阻力
+    \item 没有考虑资源限制
+\end{itemize}
+
+\begin{successbox}[title=改进模型]
+为了克服这些局限性，可以考虑 Logistic 模型：
+\[
+\frac{dP}{dt} = rP\left(1 - \frac{P}{K}\right)
+\]
+其中 $K$ 是环境容量。
+\end{successbox}
+
+\section{数学建模工具}\label{sec:modeling-tools}
+
+现代数学建模离不开计算机工具的支持。常用的工具包括：
+
+\subsection{数值计算软件}
+
+\begin{codebox}[title=Python 示例代码]
+下面是使用 Python 求解 Logistic 方程的示例：
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import odeint
+
+# 定义 Logistic 方程
+def logistic(P, t, r, K):
+    return r * P * (1 - P/K)
+
+# 参数设置
+r = 0.1  # 增长率
+K = 100  # 环境容量
+P0 = 10  # 初始人口
+
+# 时间序列
+t = np.linspace(0, 50, 100)
+
+# 求解微分方程
+P = odeint(logistic, P0, t, args=(r, K))
+
+# 绘制结果
+plt.figure(figsize=(10, 6))
+plt.plot(t, P, 'b-', linewidth=2, label='Logistic 模型')
+plt.axhline(y=K, color='r', linestyle='--', label=f'环境容量 K={K}')
+plt.xlabel('时间')
+plt.ylabel('人口数量')
+plt.title('Logistic 人口增长模型')
+plt.legend()
+plt.grid(True)
+plt.show()
+\end{lstlisting}
+\end{codebox}
+
+\subsection{其他常用工具}
+
+\begin{table}[htbp]
+    \centering
+    \caption{数学建模常用软件工具}
+    \label{tab:modeling-tools}
+    \begin{tabular}{@{}lll@{}}
+        \toprule
+        软件 & 特点 & 适用场景 \\
+        \midrule
+        MATLAB & 强大的数值计算 & 工程计算、仿真 \\
+        Python & 开源、生态丰富 & 数据分析、机器学习 \\
+        R & 统计分析专业 & 统计建模、数据可视化 \\
+        Mathematica & 符号计算强大 & 理论分析、公式推导 \\
+        SPSS & 统计分析友好 & 社会科学研究 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{本章小结}\label{sec:chapter1-summary}
+
+本章介绍了数学建模的基本概念、分类和应用，通过人口增长模型的例子说明了数学建模的基本过程。主要内容包括：
+
+\begin{itemize}
+    \item 数学建模的定义和基本步骤
+    \item 数学建模的分类方法
+    \item 数学建模的应用领域
+    \item 简单的建模实例
+    \item 常用的建模工具
+\end{itemize}
+
+\begin{definitionbox}[title=本章要点]
+数学建模是连接数学理论与实际应用的桥梁，掌握建模的基本方法和技能对于解决实际问题具有重要意义。
+\end{definitionbox}
+
+\section*{习题}
+
+\begin{enumerate}
+    \item 请解释数学建模的基本步骤，并举例说明每个步骤的具体内容。
+    
+    \item 比较马尔萨斯人口模型和 Logistic 人口模型的异同点。
+    
+    \item 选择一个你熟悉的实际问题，尝试建立一个简单的数学模型。
+    
+    \item 使用 Python 或其他工具，实现本章中的人口增长模型，并分析参数对结果的影响。
+\end{enumerate}
+
+\section*{参考文献}
+
+更多关于数学建模的内容，请参考 \cite{giordano2014first} 和 \cite{meerschaert2007mathematical}。 

@@ -1,0 +1,491 @@
+% 第三章：概率统计模型
+% 文件名：chapters/chapter3.tex
+
+\chapter{概率统计模型}\label{chap:probability-statistics}
+
+概率统计模型是数学建模中处理随机现象的重要工具。本章将介绍概率统计模型的基本概念、方法和应用。
+
+\section{随机现象与概率模型}\label{sec:random-phenomena}
+
+在现实世界中，许多现象都具有随机性，需要用概率模型来描述。
+
+\begin{definition}[概率模型]\label{def:probability-model}
+概率模型是用来描述随机现象的数学结构，它由以下三个要素组成：
+\begin{enumerate}
+    \item 样本空间 $\Omega$：所有可能结果的集合
+    \item 事件域 $\mathcal{F}$：样本空间的子集族
+    \item 概率测度 $P$：定义在事件域上的概率函数
+\end{enumerate}
+\end{definition}
+
+\begin{infobox}[title=概率的基本性质]
+对于任意事件 $A, B \in \mathcal{F}$，概率函数 $P$ 满足：
+\begin{itemize}
+    \item 非负性：$P(A) \geq 0$
+    \item 规范性：$P(\Omega) = 1$
+    \item 可列可加性：若 $A_1, A_2, \ldots$ 互不相交，则 $P(\bigcup_{i=1}^{\infty} A_i) = \sum_{i=1}^{\infty} P(A_i)$
+\end{itemize}
+\end{infobox}
+
+\subsection{条件概率与贝叶斯定理}
+
+条件概率是概率论中的核心概念，它描述了在已知某些信息的条件下，事件发生的概率。
+
+\begin{definition}[条件概率]\label{def:conditional-probability}
+设 $A, B$ 是两个事件，且 $P(B) > 0$，则事件 $A$ 在事件 $B$ 发生条件下的条件概率为：
+\[
+P(A|B) = \frac{P(A \cap B)}{P(B)}
+\]
+\end{definition}
+
+\begin{theorem}[贝叶斯定理]\label{thm:bayes-theorem}
+设 $B_1, B_2, \ldots, B_n$ 是样本空间的一个划分，即 $B_i \cap B_j = \emptyset$ ($i \neq j$) 且 $\bigcup_{i=1}^n B_i = \Omega$，则对任意事件 $A$：
+\[
+P(B_k|A) = \frac{P(A|B_k)P(B_k)}{\sum_{i=1}^n P(A|B_i)P(B_i)}
+\]
+\end{theorem}
+
+\begin{examplebox}[title=医学诊断问题]
+某种疾病的患病率为 1\%。有一种检测方法，对患者的检测准确率为 95\%，对健康人的检测准确率为 99\%。
+若某人检测结果为阳性，求其真正患病的概率。
+
+设 $D$ 表示患病，$T$ 表示检测阳性，则：
+\begin{align}
+P(D) &= 0.01 \\
+P(T|D) &= 0.95 \\
+P(T|\overline{D}) &= 0.01
+\end{align}
+
+根据贝叶斯定理：
+\[
+P(D|T) = \frac{P(T|D)P(D)}{P(T|D)P(D) + P(T|\overline{D})P(\overline{D})} = \frac{0.95 \times 0.01}{0.95 \times 0.01 + 0.01 \times 0.99} = \frac{0.0095}{0.0194} \approx 0.49
+\]
+\end{examplebox}
+
+\section{随机变量与概率分布}\label{sec:random-variables}
+
+随机变量是概率论的核心概念，它将随机现象量化为数值。
+
+\begin{definition}[随机变量]\label{def:random-variable}
+随机变量是定义在样本空间 $\Omega$ 上的实值函数 $X: \Omega \to \mathbb{R}$。
+\end{definition}
+
+\subsection{离散随机变量}
+
+离散随机变量只能取有限个或可数个值。
+
+\begin{definition}[概率质量函数]\label{def:pmf}
+设 $X$ 是离散随机变量，其概率质量函数（PMF）为：
+\[
+p_X(x) = P(X = x)
+\]
+\end{definition}
+
+\begin{table}[htbp]
+    \centering
+    \caption{常见离散分布}
+    \label{tab:discrete-distributions}
+    \begin{tabular}{@{}llll@{}}
+        \toprule
+        分布名称 & 记号 & 概率质量函数 & 参数 \\
+        \midrule
+        伯努利分布 & $\text{Bernoulli}(p)$ & $p^x(1-p)^{1-x}$ & $x \in \{0,1\}$ \\
+        二项分布 & $\text{Binomial}(n,p)$ & $\binom{n}{x}p^x(1-p)^{n-x}$ & $x \in \{0,1,\ldots,n\}$ \\
+        泊松分布 & $\text{Poisson}(\lambda)$ & $\frac{\lambda^x e^{-\lambda}}{x!}$ & $x \in \{0,1,2,\ldots\}$ \\
+        几何分布 & $\text{Geometric}(p)$ & $p(1-p)^{x-1}$ & $x \in \{1,2,3,\ldots\}$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{连续随机变量}
+
+连续随机变量可以取连续区间内的任意值。
+
+\begin{definition}[概率密度函数]\label{def:pdf}
+设 $X$ 是连续随机变量，其概率密度函数（PDF）$f_X(x)$ 满足：
+\[
+P(a \leq X \leq b) = \int_a^b f_X(x) dx
+\]
+\end{definition}
+
+\begin{theorem}[正态分布的性质]\label{thm:normal-distribution}
+设 $X \sim \mathcal{N}(\mu, \sigma^2)$，则：
+\begin{enumerate}
+    \item $E[X] = \mu$，$\text{Var}(X) = \sigma^2$
+    \item $\frac{X - \mu}{\sigma} \sim \mathcal{N}(0, 1)$
+    \item 正态分布的线性组合仍为正态分布
+\end{enumerate}
+\end{theorem}
+
+\begin{codebox}[title=正态分布的 Python 实现]
+\begin{minted}{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+# 设置参数
+mu = 0
+sigma = 1
+x = np.linspace(-4, 4, 1000)
+
+# 计算概率密度函数
+pdf = stats.norm.pdf(x, mu, sigma)
+
+# 绘制图形
+plt.figure(figsize=(10, 6))
+plt.plot(x, pdf, 'b-', linewidth=2, label=f'N({mu}, {sigma}²)')
+plt.fill_between(x, pdf, alpha=0.3)
+plt.xlabel('x')
+plt.ylabel('f(x)')
+plt.title('标准正态分布')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# 计算概率
+prob = stats.norm.cdf(1, mu, sigma) - stats.norm.cdf(-1, mu, sigma)
+print(f"P(-1 ≤ X ≤ 1) = {prob:.4f}")
+\end{minted}
+\end{codebox}
+
+\section{参数估计}\label{sec:parameter-estimation}
+
+参数估计是统计推断的重要内容，用于从样本数据中估计总体参数。
+
+\subsection{点估计}
+
+点估计是用样本统计量来估计总体参数的具体数值。
+
+\begin{definition}[矩估计法]\label{def:method-of-moments}
+设总体的前 $k$ 阶矩为 $\mu_k = E[X^k]$，样本的前 $k$ 阶矩为 $m_k = \frac{1}{n}\sum_{i=1}^n X_i^k$，
+则矩估计法通过解方程组：
+\[
+\mu_k(\theta_1, \ldots, \theta_p) = m_k, \quad k = 1, 2, \ldots, p
+\]
+来估计参数 $\theta_1, \ldots, \theta_p$。
+\end{definition}
+
+\begin{definition}[最大似然估计]\label{def:mle}
+设 $X_1, \ldots, X_n$ 是来自总体 $f(x; \theta)$ 的样本，似然函数为：
+\[
+L(\theta) = \prod_{i=1}^n f(X_i; \theta)
+\]
+最大似然估计 $\hat{\theta}$ 满足：
+\[
+\hat{\theta} = \arg\max_{\theta} L(\theta)
+\]
+\end{definition}
+
+\begin{warningbox}[title=注意事项]
+最大似然估计通常通过解似然方程 $\frac{\partial \ln L(\theta)}{\partial \theta} = 0$ 来求得，但需要验证所得解确实是最大值点。
+\end{warningbox}
+
+\subsection{区间估计}
+
+区间估计给出参数的一个可信区间。
+
+\begin{definition}[置信区间]\label{def:confidence-interval}
+设 $\theta$ 是待估参数，$\alpha \in (0, 1)$，若存在统计量 $L$ 和 $U$ 使得：
+\[
+P(L \leq \theta \leq U) = 1 - \alpha
+\]
+则称 $[L, U]$ 为 $\theta$ 的置信水平为 $1-\alpha$ 的置信区间。
+\end{definition}
+
+\begin{example}[正态总体均值的置信区间]\label{ex:confidence-interval-normal}
+设 $X_1, \ldots, X_n$ 是来自 $\mathcal{N}(\mu, \sigma^2)$ 的样本，$\sigma^2$ 已知，则 $\mu$ 的 $1-\alpha$ 置信区间为：
+\[
+\left[\bar{X} - z_{\alpha/2}\frac{\sigma}{\sqrt{n}}, \bar{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}\right]
+\]
+其中 $z_{\alpha/2}$ 是标准正态分布的 $1-\alpha/2$ 分位数。
+\end{example}
+
+\section{假设检验}\label{sec:hypothesis-testing}
+
+假设检验是统计推断的另一个重要内容，用于检验关于总体参数的假设。
+
+\begin{definition}[假设检验]\label{def:hypothesis-testing}
+假设检验是对总体参数的某个假设进行检验的统计方法。通常包括：
+\begin{itemize}
+    \item 原假设 $H_0$：待检验的假设
+    \item 备择假设 $H_1$：与原假设对立的假设
+    \item 检验统计量：用于检验的统计量
+    \item 拒绝域：拒绝原假设的统计量取值范围
+\end{itemize}
+\end{definition}
+
+\subsection{两类错误}
+
+在假设检验中，可能出现两类错误：
+
+\begin{table}[htbp]
+    \centering
+    \caption{假设检验中的两类错误}
+    \label{tab:type-errors}
+    \begin{tabular}{@{}ccc@{}}
+        \toprule
+        & $H_0$ 为真 & $H_0$ 为假 \\
+        \midrule
+        接受 $H_0$ & 正确 & 第二类错误 \\
+        拒绝 $H_0$ & 第一类错误 & 正确 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{definition}[显著性水平]\label{def:significance-level}
+第一类错误的概率 $\alpha = P(\text{拒绝} H_0 | H_0 \text{为真})$ 称为显著性水平。
+\end{definition}
+
+\begin{successbox}[title=假设检验的步骤]
+\begin{enumerate}
+    \item 建立原假设 $H_0$ 和备择假设 $H_1$
+    \item 选择检验统计量
+    \item 给定显著性水平 $\alpha$
+    \item 确定拒绝域
+    \item 计算统计量的值
+    \item 作出判断
+\end{enumerate}
+\end{successbox}
+
+\subsection{常用检验方法}
+
+\begin{example}[t 检验]\label{ex:t-test}
+对于正态总体均值的检验，当方差未知时使用 t 检验。
+
+检验 $H_0: \mu = \mu_0$ vs $H_1: \mu \neq \mu_0$，检验统计量为：
+\[
+t = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}
+\]
+其中 $S$ 是样本标准差。在 $H_0$ 为真时，$t \sim t(n-1)$。
+\end{example}
+
+\begin{codebox}[title=t 检验的 Python 实现]
+\begin{minted}{python}
+import numpy as np
+from scipy import stats
+
+# 生成样本数据
+np.random.seed(42)
+sample = np.random.normal(100, 15, 50)
+
+# 单样本 t 检验
+mu_0 = 95  # 原假设均值
+t_stat, p_value = stats.ttest_1samp(sample, mu_0)
+
+print(f"样本均值: {np.mean(sample):.2f}")
+print(f"样本标准差: {np.std(sample, ddof=1):.2f}")
+print(f"t 统计量: {t_stat:.4f}")
+print(f"p 值: {p_value:.4f}")
+
+# 判断结果
+alpha = 0.05
+if p_value < alpha:
+    print(f"在 {alpha} 显著性水平下拒绝原假设")
+else:
+    print(f"在 {alpha} 显著性水平下接受原假设")
+\end{minted}
+\end{codebox}
+
+\section{回归分析}\label{sec:regression-analysis}
+
+回归分析是研究变量间关系的统计方法，在数学建模中有着广泛的应用。
+
+\subsection{一元线性回归}
+
+\begin{definition}[一元线性回归模型]\label{def:simple-linear-regression}
+一元线性回归模型的形式为：
+\[
+Y = \beta_0 + \beta_1 X + \varepsilon
+\]
+其中 $Y$ 是因变量，$X$ 是自变量，$\beta_0, \beta_1$ 是回归参数，$\varepsilon$ 是随机误差项。
+\end{definition}
+
+\begin{theorem}[最小二乘估计]\label{thm:least-squares}
+最小二乘估计量为：
+\begin{align}
+\hat{\beta}_1 &= \frac{\sum_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^n (X_i - \bar{X})^2} \\
+\hat{\beta}_0 &= \bar{Y} - \hat{\beta}_1 \bar{X}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+目标是最小化残差平方和：
+\[
+S(\beta_0, \beta_1) = \sum_{i=1}^n (Y_i - \beta_0 - \beta_1 X_i)^2
+\]
+
+对 $\beta_0$ 和 $\beta_1$ 分别求偏导并令其为零：
+\begin{align}
+\frac{\partial S}{\partial \beta_0} &= -2\sum_{i=1}^n (Y_i - \beta_0 - \beta_1 X_i) = 0 \\
+\frac{\partial S}{\partial \beta_1} &= -2\sum_{i=1}^n X_i(Y_i - \beta_0 - \beta_1 X_i) = 0
+\end{align}
+
+解这个方程组即可得到最小二乘估计量。
+\end{proof}
+
+\subsection{多元线性回归}
+
+\begin{definition}[多元线性回归模型]\label{def:multiple-linear-regression}
+多元线性回归模型的矩阵形式为：
+\[
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}
+\]
+其中 $\mathbf{Y}$ 是 $n \times 1$ 的因变量向量，$\mathbf{X}$ 是 $n \times (p+1)$ 的设计矩阵，$\boldsymbol{\beta}$ 是 $(p+1) \times 1$ 的参数向量。
+\end{definition}
+
+\begin{theorem}[多元线性回归的最小二乘估计]\label{thm:multiple-least-squares}
+多元线性回归的最小二乘估计量为：
+\[
+\hat{\boldsymbol{\beta}} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{Y}
+\]
+\end{theorem}
+
+\begin{codebox}[title=多元线性回归的 Python 实现]
+\begin{minted}{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+
+# 生成示例数据
+np.random.seed(42)
+n = 100
+X = np.random.randn(n, 3)  # 3 个自变量
+beta = np.array([1, 2, -1, 0.5])  # 真实参数
+Y = beta[0] + X @ beta[1:] + 0.1 * np.random.randn(n)
+
+# 添加常数项
+X_with_intercept = np.column_stack([np.ones(n), X])
+
+# 最小二乘估计
+beta_hat = np.linalg.inv(X_with_intercept.T @ X_with_intercept) @ X_with_intercept.T @ Y
+
+# 使用 sklearn 验证
+model = LinearRegression()
+model.fit(X, Y)
+
+print("手工计算的参数估计:")
+print(f"截距: {beta_hat[0]:.4f}")
+print(f"斜率: {beta_hat[1:]}")
+
+print("\nsklearn 计算的参数估计:")
+print(f"截距: {model.intercept_:.4f}")
+print(f"斜率: {model.coef_}")
+
+# 计算拟合优度
+Y_pred = X_with_intercept @ beta_hat
+r2 = r2_score(Y, Y_pred)
+print(f"\nR² = {r2:.4f}")
+\end{minted}
+\end{codebox}
+
+\section{时间序列分析}\label{sec:time-series}
+
+时间序列分析是研究按时间顺序观测到的数据的统计方法。
+
+\subsection{时间序列的基本概念}
+
+\begin{definition}[平稳时间序列]\label{def:stationary-time-series}
+时间序列 $\{X_t\}$ 是（弱）平稳的，如果：
+\begin{enumerate}
+    \item $E[X_t] = \mu$（常数）
+    \item $\text{Var}(X_t) = \sigma^2$（常数）
+    \item $\text{Cov}(X_t, X_{t+h}) = \gamma(h)$（只依赖于时间差 $h$）
+\end{enumerate}
+\end{definition}
+
+\subsection{ARIMA 模型}
+
+\begin{definition}[ARIMA 模型]\label{def:arima}
+ARIMA(p,d,q) 模型是指对时间序列进行 $d$ 次差分后得到的序列满足 ARMA(p,q) 模型：
+\[
+\phi(B)(1-B)^d X_t = \theta(B)\varepsilon_t
+\]
+其中 $B$ 是后移算子，$\phi(B)$ 和 $\theta(B)$ 分别是 $p$ 阶和 $q$ 阶多项式。
+\end{definition}
+
+\begin{examplebox}[title=随机游走模型]
+随机游走模型是 ARIMA(0,1,0) 模型的特例：
+\[
+X_t = X_{t-1} + \varepsilon_t
+\]
+其中 $\varepsilon_t$ 是白噪声序列。
+
+这个模型常用于描述股票价格、汇率等金融时间序列。
+\end{examplebox}
+
+\section{贝叶斯统计}\label{sec:bayesian-statistics}
+
+贝叶斯统计是基于贝叶斯定理的统计推断方法。
+
+\subsection{贝叶斯推断}
+
+\begin{definition}[贝叶斯公式（统计版）]\label{def:bayesian-inference}
+设 $\theta$ 是参数，$D$ 是观测数据，则：
+\[
+p(\theta|D) = \frac{p(D|\theta)p(\theta)}{p(D)}
+\]
+其中：
+\begin{itemize}
+    \item $p(\theta|D)$ 是后验分布
+    \item $p(D|\theta)$ 是似然函数
+    \item $p(\theta)$ 是先验分布
+    \item $p(D)$ 是边际似然
+\end{itemize}
+\end{definition}
+
+\begin{infobox}[title=贝叶斯推断的优势]
+\begin{itemize}
+    \item 能够融合先验信息
+    \item 提供参数的概率分布而非点估计
+    \item 便于处理不确定性
+    \item 适用于小样本情况
+\end{itemize}
+\end{infobox}
+
+\subsection{共轭先验}
+
+\begin{definition}[共轭先验]\label{def:conjugate-prior}
+如果先验分布和后验分布属于同一分布族，则称该先验分布为共轭先验。
+\end{definition}
+
+\begin{example}[正态分布的共轭先验]\label{ex:conjugate-normal}
+对于正态分布 $\mathcal{N}(\mu, \sigma^2)$（$\sigma^2$ 已知），均值参数 $\mu$ 的共轭先验是正态分布 $\mathcal{N}(\mu_0, \sigma_0^2)$。
+
+给定样本 $x_1, \ldots, x_n$，后验分布为：
+\[
+\mu|x_1,\ldots,x_n \sim \mathcal{N}\left(\frac{\frac{n}{\sigma^2}\bar{x} + \frac{1}{\sigma_0^2}\mu_0}{\frac{n}{\sigma^2} + \frac{1}{\sigma_0^2}}, \frac{1}{\frac{n}{\sigma^2} + \frac{1}{\sigma_0^2}}\right)
+\]
+\end{example}
+
+\section{本章小结}\label{sec:chapter3-summary}
+
+本章介绍了概率统计模型的基本概念和主要方法，包括：
+
+\begin{itemize}
+    \item 概率模型的基本要素和条件概率
+    \item 随机变量和常见概率分布
+    \item 参数估计的矩估计法和最大似然估计法
+    \item 假设检验的基本原理和方法
+    \item 回归分析的理论和应用
+    \item 时间序列分析的基本概念
+    \item 贝叶斯统计的推断方法
+\end{itemize}
+
+\begin{definitionbox}[title=本章要点]
+概率统计模型是处理随机现象的有力工具，在实际应用中需要根据问题的特点选择合适的模型和方法。理解概率论的基本概念和统计推断的基本方法对于建立有效的随机模型至关重要。
+\end{definitionbox}
+
+\section*{习题}
+
+\begin{enumerate}
+    \item 用贝叶斯定理分析一个实际的诊断问题。
+    
+    \item 比较矩估计法和最大似然估计法的优缺点。
+    
+    \item 设计一个假设检验问题，并用 Python 实现检验过程。
+    
+    \item 用线性回归分析一组实际数据，并评估模型的拟合效果。
+    
+    \item 实现一个简单的贝叶斯推断算法。
+\end{enumerate} 
